@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Khyber Darbar — Tip & Service Charge Control</title>
+<style>
+:root{
+ --bg:#f5f6f8;--surface:#fff;--surface2:#f9fafb;--ink:#17211b;--muted:#718078;--line:#e4e8e5;
+ --green:#173d2c;--green2:#23563f;--gold:#b98743;--gold2:#f5ead8;--red:#b83b35;--red2:#fbe9e7;
+ --blue:#315c86;--blue2:#e9f1fa;--shadow:0 10px 30px rgba(22,35,28,.07)
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{display:flex;min-height:100vh}.sidebar{width:255px;background:var(--green);color:#fff;position:fixed;inset:0 auto 0 0;padding:20px 14px;z-index:5}
+.brand{display:flex;gap:11px;align-items:center;padding:8px 10px 22px;border-bottom:1px solid #ffffff18}.brandmark{width:42px;height:42px;border-radius:12px;background:#fff;color:var(--green);display:grid;place-items:center;font-size:21px;font-weight:900}.brand b{display:block;font-size:15px}.brand span{display:block;font-size:11px;opacity:.65;margin-top:2px}
+.nav{padding-top:18px}.nav button{width:100%;background:transparent;border:0;color:#dbe8e1;padding:11px 12px;border-radius:10px;text-align:left;display:flex;align-items:center;gap:11px;margin-bottom:4px;font-weight:700}.nav button:hover,.nav button.active{background:#ffffff14;color:#fff}.nav .ico{width:21px;text-align:center}
+.side-bottom{position:absolute;bottom:16px;left:14px;right:14px;font-size:11px;color:#b9c9c1;padding:12px;border:1px solid #ffffff15;border-radius:10px}
+.main{margin-left:255px;flex:1;min-width:0}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:4}.topbar h1{font-size:19px;margin:0}.topbar small{display:block;color:var(--muted);margin-top:2px}.top-actions{display:flex;gap:8px;align-items:center}
+.container{padding:25px 28px;max-width:1550px;margin:auto}.page{display:none}.page.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}.stat{min-height:122px}.stat-top{display:flex;justify-content:space-between;align-items:center}.stat-label{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.stat-value{font-size:27px;font-weight:850;margin-top:10px}.stat-sub{font-size:12px;color:var(--muted);margin-top:5px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-top:16px;padding:20px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:16px}.panel-head h2,.panel-head h3{margin:0;font-size:16px}.muted{color:var(--muted)}.small{font-size:12px}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 13px;border-radius:9px;font-weight:800}.btn:hover{filter:brightness(.98)}.btn-primary{background:var(--green);color:#fff;border-color:var(--green)}.btn-gold{background:var(--gold2);color:#6f4a19;border-color:#ead7b6}.btn-danger{background:var(--red2);color:#96302b;border-color:#f1c8c4}.btn-blue{background:var(--blue2);color:#315c86;border-color:#cfe0f0}.btn:disabled{opacity:.45;cursor:not-allowed}
+.actions{display:flex;flex-wrap:wrap;gap:8px}.filters{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.field label{display:block;color:#5d6a63;font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.03em;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;border:1px solid #d4dbd7;border-radius:9px;background:#fff;padding:10px 11px;outline:none}.field textarea{min-height:82px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:#709381;box-shadow:0 0 0 3px #173d2c12}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap}th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#64716a;background:#f8faf9;text-align:left}tbody tr:hover{background:#fbfcfb}td.num{text-align:right;font-variant-numeric:tabular-nums}.badge{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:850}.full{background:#e5f3eb;color:#216448}.part{background:#fff0d8;color:#825b20}.paid{background:#e5f3eb;color:#216448}.pending{background:#fff0d8;color:#825b20}.absent{background:#f5e9e8;color:#8d3b35}.present{background:#e9f4ee;color:#216448}.left{background:#edf0f2;color:#58655f}
+.split{display:grid;grid-template-columns:1.35fr .65fr;gap:16px}.summary-box{background:var(--surface2);border:1px solid var(--line);border-radius:11px;padding:15px}.money{font-variant-numeric:tabular-nums}.big-money{font-size:27px;font-weight:850}.row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed #dce2de}.row:last-child{border-bottom:0}.notice{padding:12px;border-radius:10px;background:#fff8e8;border:1px solid #eddcb9;color:#765a28;font-size:12px}.success{padding:12px;border-radius:10px;background:#e9f5ef;border:1px solid #c9e5d5;color:#236548;font-size:12px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mini{background:#f8faf9;border:1px solid var(--line);border-radius:10px;padding:13px}.mini b{font-size:20px}.mini span{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.chart{height:220px;display:flex;align-items:flex-end;gap:10px;padding:15px 4px 0}.bar-col{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px}.bar{width:100%;max-width:42px;border-radius:7px 7px 2px 2px;background:var(--green2);min-height:3px}.bar-label{font-size:10px;color:var(--muted)}.bar-val{font-size:10px;font-weight:800}
+.modal{position:fixed;inset:0;background:#07120db3;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.open{display:flex}.modal-box{background:#fff;border-radius:15px;width:min(680px,100%);max-height:90vh;overflow:auto;padding:20px;box-shadow:0 30px 80px #0005}.modal-head{display:flex;justify-content:space-between;align-items:center}.modal-head h2{font-size:17px;margin:0}.close{border:0;background:#f0f2f1;width:34px;height:34px;border-radius:9px;font-weight:900}
+.empty{text-align:center;padding:30px;color:var(--muted)}
+.toast{position:fixed;right:22px;bottom:22px;background:#16231d;color:#fff;padding:12px 15px;border-radius:10px;box-shadow:0 12px 30px #0003;display:none;z-index:30}.toast.show{display:block}
+.progress{height:7px;background:#edf0ee;border-radius:20px;overflow:hidden}.progress i{display:block;height:100%;background:var(--gold);border-radius:20px}
+@media(max-width:1100px){.sidebar{width:215px}.main{margin-left:215px}.grid{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:repeat(3,1fr)}.split{grid-template-columns:1fr}}
+@media(max-width:720px){.sidebar{position:static;width:100%;height:auto}.side-bottom{position:static;margin-top:15px}.app{display:block}.main{margin-left:0}.topbar{padding:12px 15px;height:auto}.container{padding:15px}.grid,.filters,.kpis{grid-template-columns:1fr}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.top-actions .hide-sm{display:none}}
+@media print{.sidebar,.topbar,.actions,.no-print{display:none!important}.main{margin:0}.panel,.card{box-shadow:none}.page{display:none}.page.active{display:block}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brandmark">KD</div><div><b>Khyber Darbar</b><span>Tip & Service Control</span></div></div>
+  <nav class="nav">
+    <button class="active" data-page="dashboard"><span class="ico">▦</span>Dashboard</button>
+    <button data-page="settlement"><span class="ico">✓</span>Daily Settlement</button>
+    <button data-page="ledger"><span class="ico">▤</span>Payment Ledger</button>
+    <button data-page="staff"><span class="ico">♙</span>Staff & Roles</button>
+    <button data-page="reports"><span class="ico">◫</span>Reports</button>
+    <button data-page="audit"><span class="ico">◷</span>Audit / History</button>
+    <button data-page="settings"><span class="ico">⚙</span>Rules & Backup</button>
+  </nav>
+  <div class="side-bottom">Local prototype • Data is stored in this browser. Export a backup before changing device/browser.</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div><h1 id="pageTitle">Dashboard</h1><small id="todayText"></small></div>
+ <div class="top-actions"><button class="btn btn-gold hide-sm" onclick="go('settlement')">+ New Settlement</button><button class="btn btn-primary" onclick="openQuickPay()">Record Payment</button></div>
+</header>
+
+<div class="container">
+<section class="page active" id="dashboard">
+ <div class="grid">
+  <div class="card stat"><div class="stat-top"><span class="stat-label">Today's pool</span><span>💰</span></div><div class="stat-value" id="dashPool">PKR 0</div><div class="stat-sub" id="dashPoolSub">0 settlements</div></div>
+  <div class="card stat"><div class="stat-top"><span class="stat-label">Today's points</span><span>◉</span></div><div class="stat-value" id="dashPoints">0</div><div class="stat-sub">Weighted active points</div></div>
+  <div class="card stat"><div class="stat-top"><span class="stat-label">Pending payout</span><span>⌛</span></div><div class="stat-value" id="dashPending">PKR 0</div><div class="stat-sub" id="dashPendingSub">0 people</div></div>
+  <div class="card stat"><div class="stat-top"><span class="stat-label">Paid today</span><span>✓</span></div><div class="stat-value" id="dashPaid">PKR 0</div><div class="stat-sub">Confirmed payouts</div></div>
+ </div>
+ <div class="split">
+  <div class="panel"><div class="panel-head"><div><h2>Last 7 days</h2><div class="muted small">Total tip + service-charge pool</div></div><button class="btn" onclick="go('reports')">Full report</button></div><div class="chart" id="weekChart"></div></div>
+  <div class="panel"><div class="panel-head"><div><h2>Today's settlement</h2><div class="muted small">Latest saved shift</div></div></div><div id="latestBox"></div></div>
+ </div>
+ <div class="panel"><div class="panel-head"><h2>Control checklist</h2></div><div class="kpis" id="controlKpis"></div></div>
+</section>
+
+<section class="page" id="settlement">
+ <div class="panel">
+  <div class="panel-head"><div><h2>Daily settlement</h2><div class="muted small">Create one controlled record for a shift/day. Nothing is paid until a manager confirms it.</div></div><span class="badge" id="settleStatus">DRAFT</span></div>
+  <div class="filters">
+   <div class="field"><label>Date</label><input id="sDate" type="date"></div>
+   <div class="field"><label>Shift</label><select id="sShift"><option>Morning</option><option>Afternoon</option><option>Evening</option><option>Night</option><option>Full Day</option></select></div>
+   <div class="field"><label>Tips</label><input id="sTips" type="number" min="0" step=".01" value="0" oninput="recalcSettlement()"></div>
+   <div class="field"><label>Service charge</label><input id="sService" type="number" min="0" step=".01" value="0" oninput="recalcSettlement()"></div>
+   <div class="field"><label>Prepared by</label><input id="sPrepared" placeholder="Manager / cashier"></div>
+  </div>
+  <div class="filters" style="margin-top:10px">
+   <div class="field"><label>Reference / batch no.</label><input id="sRef" placeholder="e.g. KD-2026-0908-E"></div>
+   <div class="field"><label>Notes</label><input id="sNotes" placeholder="Optional"></div>
+   <div class="field"><label>Rounding policy</label><select id="sRound"><option value="none">Exact (2 decimals)</option><option value="rupee">Nearest rupee</option></select></div>
+  </div>
+ </div>
+ <div class="split">
+  <div class="panel"><div class="panel-head"><div><h2>Attendance & point allocation</h2><div class="muted small">Change attendance before locking the settlement.</div></div><div class="actions"><button class="btn" onclick="markAll('Present')">All present</button><button class="btn" onclick="markAll('Absent')">All absent</button></div></div>
+   <div class="table-wrap"><table><thead><tr><th>Staff</th><th>Role</th><th>Type</th><th>Attendance</th><th>Points</th><th>Share</th><th>Amount</th></tr></thead><tbody id="settleBody"></tbody></table></div>
+  </div>
+  <div class="panel"><h2 style="margin-top:0">Settlement summary</h2><div class="summary-box" id="settleSummary"></div>
+   <div class="actions" style="margin-top:12px"><button class="btn btn-primary" onclick="saveSettlement()">Save & lock settlement</button><button class="btn btn-gold" onclick="previewSettlement()">Preview print</button><button class="btn" onclick="clearSettlement()">Clear</button></div>
+   <div class="notice" style="margin-top:12px">Best practice: two people should verify cash/service-charge totals and attendance before locking. Locked records are never silently overwritten; corrections create an audit entry.</div>
+  </div>
+ </div>
+</section>
+
+<section class="page" id="ledger">
+ <div class="panel">
+  <div class="panel-head"><div><h2>Payment ledger</h2><div class="muted small">Every staff payout, with settlement reference and payment status.</div></div><div class="actions"><button class="btn btn-primary" onclick="openQuickPay()">Record payout</button><button class="btn" onclick="exportPaymentsCSV()">Export CSV</button></div></div>
+  <div class="filters">
+   <div class="field"><label>From</label><input id="lFrom" type="date" onchange="renderLedger()"></div><div class="field"><label>To</label><input id="lTo" type="date" onchange="renderLedger()"></div>
+   <div class="field"><label>Role</label><select id="lRole" onchange="renderLedger()"><option value="">All roles</option><option>Waiter</option><option>Order Taker</option><option>Food Packer</option></select></div>
+   <div class="field"><label>Status</label><select id="lStatus" onchange="renderLedger()"><option value="">All</option><option>Pending</option><option>Paid</option></select></div>
+   <div class="field"><label>Search</label><input id="lSearch" oninput="renderLedger()" placeholder="Name / reference"></div>
+  </div>
+  <div class="table-wrap" style="margin-top:15px"><table><thead><tr><th>Date</th><th>Shift</th><th>Staff</th><th>Role</th><th>Points</th><th>Amount</th><th>Status</th><th>Paid at</th><th>Action</th></tr></thead><tbody id="ledgerBody"></tbody></table></div>
+ </div>
+</section>
+
+<section class="page" id="staff">
+ <div class="split">
+  <div class="panel"><div class="panel-head"><div><h2>Staff master list</h2><div class="muted small">Use stable staff names/IDs. Changing a staff member does not rewrite historical payouts.</div></div><button class="btn btn-primary" onclick="openStaffModal()">+ Add staff</button></div>
+   <div class="filters"><div class="field"><label>Role</label><select id="stRole" onchange="renderStaff()"><option value="">All</option><option>Waiter</option><option>Order Taker</option><option>Food Packer</option></select></div><div class="field"><label>Status</label><select id="stStatus" onchange="renderStaff()"><option value="">All</option><option>Active</option><option>Inactive</option></select></div></div>
+   <div class="table-wrap" style="margin-top:15px"><table><thead><tr><th>Code</th><th>Name</th><th>Role</th><th>Type</th><th>Point</th><th>Status</th><th>Action</th></tr></thead><tbody id="staffBody"></tbody></table></div>
+  </div>
+  <div class="panel"><h2 style="margin-top:0">Point rules</h2><div class="summary-box"><div class="row"><span>Full-time</span><b id="ruleFull">1.00</b></div><div class="row"><span>Part-time</span><b id="rulePart">0.50</b></div><div class="row"><span>Left early multiplier</span><b id="ruleEarly">1.00</b></div></div><div class="notice" style="margin-top:12px">Rules are applied at settlement time. Historical records keep the actual points used, so changing a rule will not change old payouts.</div></div>
+ </div>
+</section>
+
+<section class="page" id="reports">
+ <div class="panel">
+  <div class="panel-head"><div><h2>Management reports</h2><div class="muted small">Filter by period and see exactly where the pool went.</div></div><div class="actions"><button class="btn" onclick="window.print()">Print</button><button class="btn" onclick="exportReportCSV()">Export CSV</button></div></div>
+  <div class="filters">
+   <div class="field"><label>From</label><input id="rFrom" type="date" onchange="renderReports()"></div><div class="field"><label>To</label><input id="rTo" type="date" onchange="renderReports()"></div>
+   <div class="field"><label>Role</label><select id="rRole" onchange="renderReports()"><option value="">All roles</option><option>Waiter</option><option>Order Taker</option><option>Food Packer</option></select></div>
+   <div class="field"><label>Payment</label><select id="rPay" onchange="renderReports()"><option value="">All</option><option>Paid</option><option>Pending</option></select></div>
+   <div class="field"><label>Group</label><select id="rGroup" onchange="renderReports()"><option value="person">By person</option><option value="role">By role</option><option value="day">By day</option></select></div>
+  </div>
+ </div>
+ <div class="grid" id="reportStats"></div>
+ <div class="panel"><div class="table-wrap"><table id="reportTable"></table></div></div>
+</section>
+
+<section class="page" id="audit">
+ <div class="panel">
+  <div class="panel-head"><div><h2>Audit / history</h2><div class="muted small">Operational trail for settlement creation, edits, payment confirmations and backups.</div></div><button class="btn" onclick="exportAuditCSV()">Export CSV</button></div>
+  <div class="filters"><div class="field"><label>Search</label><input id="aSearch" oninput="renderAudit()" placeholder="Action / user / reference"></div><div class="field"><label>Type</label><select id="aType" onchange="renderAudit()"><option value="">All</option><option>Settlement</option><option>Payment</option><option>Staff</option><option>System</option></select></div></div>
+  <div class="table-wrap" style="margin-top:15px"><table><thead><tr><th>Time</th><th>Type</th><th>Action</th><th>Reference</th><th>User</th><th>Details</th></tr></thead><tbody id="auditBody"></tbody></table></div>
+ </div>
+</section>
+
+<section class="page" id="settings">
+ <div class="split">
+  <div class="panel"><div class="panel-head"><h2>Restaurant & distribution rules</h2></div>
+   <div class="filters">
+    <div class="field"><label>Restaurant</label><input id="setName"></div><div class="field"><label>Currency</label><input id="setCurrency"></div>
+    <div class="field"><label>Full-time point</label><input id="setFull" type="number" step=".01"></div><div class="field"><label>Part-time point</label><input id="setPart" type="number" step=".01"></div>
+    <div class="field"><label>Early-leave point</label><input id="setEarly" type="number" step=".01"></div>
+   </div>
+   <div class="actions" style="margin-top:12px"><button class="btn btn-primary" onclick="saveSettings()">Save rules</button></div>
+   <div class="success" style="margin-top:14px">The system records the actual point value inside each settlement. This protects historical calculations when rules change later.</div>
+  </div>
+  <div class="panel"><div class="panel-head"><h2>Backup & restore</h2></div>
+   <p class="muted small">Export a complete JSON backup regularly. You can restore the same data on another computer/browser using this file.</p>
+   <div class="actions"><button class="btn btn-primary" onclick="backupJSON()">Download backup</button><button class="btn" onclick="document.getElementById('restoreFile').click()">Restore backup</button><input id="restoreFile" type="file" accept=".json" hidden onchange="restoreJSON(event)"></div>
+   <div class="notice" style="margin-top:14px">For actual multi-device restaurant deployment, replace localStorage with a server database and add user accounts, manager approval, permissions, automatic backups and an immutable audit log.</div>
+  </div>
+ </div>
+</section>
+</div>
+</main>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const STORE='kd_tip_control_v3';
+const blank={
+ meta:{name:'Khyber Darbar',currency:'PKR',full:1,part:.5,early:1},
+ staff:[],settlements:[],payments:[],audit:[]
+};
+let db=JSON.parse(localStorage.getItem(STORE)||'null')||structuredClone(blank);
+let draftRows=[];
+const $=id=>document.getElementById(id);
+const money=n=>`${db.meta.currency} ${Number(n||0).toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+const dateNow=()=>new Date().toISOString().slice(0,10);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+function persist(){localStorage.setItem(STORE,JSON.stringify(db))}
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2200)}
+function audit(type,action,ref,details,user='Manager'){db.audit.unshift({id:Date.now()+Math.random(),time:new Date().toISOString(),type,action,ref,user,details});}
+function go(page){
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+ document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===page));
+ $('pageTitle').textContent=({dashboard:'Dashboard',settlement:'Daily Settlement',ledger:'Payment Ledger',staff:'Staff & Roles',reports:'Management Reports',audit:'Audit / History',settings:'Rules & Backup'})[page];
+ if(page==='dashboard')renderDashboard(); if(page==='settlement')prepareSettlement(); if(page==='ledger')renderLedger(); if(page==='staff')renderStaff(); if(page==='reports')renderReports(); if(page==='audit')renderAudit(); if(page==='settings')loadSettings();
+}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>go(b.dataset.page));
+$('todayText').textContent=new Date().toLocaleDateString('en-PK',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+function seedDemo(){
+ if(db.staff.length)return;
+ const names=[
+ ['Adeel Khan','Waiter','Full Time'],['Bilal Ahmad','Waiter','Full Time'],['Hamza Afridi','Waiter','Full Time'],['Imran Shah','Waiter','Full Time'],['Junaid Khan','Waiter','Full Time'],['Kamran Ali','Waiter','Full Time'],['Noman Khan','Waiter','Full Time'],['Saad Ullah','Waiter','Full Time'],['Usman Tariq','Waiter','Full Time'],['Waqas Ahmad','Waiter','Full Time'],
+ ['Asad Khan','Order Taker','Full Time'],['Danish Ali','Order Taker','Full Time'],['Fahad Khan','Order Taker','Full Time'],['Hassan Shah','Order Taker','Full Time'],['Ihtisham Khan','Order Taker','Full Time'],['Muneeb Ahmad','Order Taker','Full Time'],['Owais Khan','Order Taker','Full Time'],['Rizwan Ali','Order Taker','Full Time'],['Shahzaib Khan','Order Taker','Full Time'],['Yasir Khan','Order Taker','Full Time'],
+ ['Arsalan Khan','Food Packer','Full Time'],['Babar Ali','Food Packer','Full Time'],['Dawood Khan','Food Packer','Full Time'],['Ehsan Ullah','Food Packer','Full Time'],
+ ['Farhan Khan','Waiter','Part Time'],['Gul Zada','Waiter','Part Time'],['Kashif Ali','Order Taker','Part Time'],['Naeem Shah','Order Taker','Part Time'],['Sami Ullah','Food Packer','Part Time'],['Zubair Khan','Food Packer','Part Time']
+ ];
+ names.forEach((x,i)=>db.staff.push({id:'ST'+String(i+1).padStart(3,'0'),name:x[0],role:x[1],type:x[2],active:true,createdAt:new Date().toISOString()}));
+ audit('System','Demo staff loaded','SYSTEM',`${names.length} sample staff added`);
+ persist();
+}
+seedDemo();
+
+function prepareSettlement(){
+ $('sDate').value=dateNow();$('sTips').value=0;$('sService').value=0;$('sPrepared').value='';$('sRef').value='';$('sNotes').value='';$('sShift').value='Evening';
+ draftRows=db.staff.filter(x=>x.active).map(p=>({personId:p.id,name:p.name,role:p.role,type:p.type,attendance:'Present',point:p.type==='Part Time'?db.meta.part:db.meta.full}));
+ recalcSettlement();
+}
+function recalcSettlement(){
+ const pool=(+$('sTips').value||0)+(+$('sService').value||0);
+ const pts=draftRows.reduce((a,r)=>a+r.point,0),v=pts?pool/pts:0;
+ $('settleBody').innerHTML=draftRows.map((r,i)=>`<tr><td><b>${esc(r.name)}</b><div class="muted small">${r.personId}</div></td><td>${r.role}</td><td><span class="badge ${r.type==='Part Time'?'part':'full'}">${r.type}</span></td><td><select onchange="attendance(${i},this.value)"><option ${r.attendance==='Present'?'selected':''}>Present</option><option ${r.attendance==='Left Early'?'selected':''}>Left Early</option><option ${r.attendance==='Absent'?'selected':''}>Absent</option></select></td><td>${r.point.toFixed(2)}</td><td>${pts?((r.point/pts)*100).toFixed(2):'0.00'}%</td><td class="num"><b>${money(v*r.point)}</b></td></tr>`).join('')||`<tr><td colspan="7" class="empty">No active staff.</td></tr>`;
+ $('settleSummary').innerHTML=`<div class="row"><span>Tips</span><b>${money(+$('sTips').value||0)}</b></div><div class="row"><span>Service charge</span><b>${money(+$('sService').value||0)}</b></div><div class="row"><span>Total pool</span><b class="big-money">${money(pool)}</b></div><div class="row"><span>Active points</span><b>${pts.toFixed(2)}</b></div><div class="row"><span>Value per point</span><b>${money(v)}</b></div><div class="row"><span>Distributed</span><b>${money(v*pts)}</b></div>`;
+}
+function attendance(i,v){
+ draftRows[i].attendance=v;
+ if(v==='Absent')draftRows[i].point=0;
+ else if(v==='Left Early')draftRows[i].point=(draftRows[i].type==='Part Time'?db.meta.part:db.meta.full)*db.meta.early;
+ else draftRows[i].point=draftRows[i].type==='Part Time'?db.meta.part:db.meta.full;
+ recalcSettlement();
+}
+function markAll(v){draftRows.forEach((r,i)=>attendance(i,v));}
+function saveSettlement(){
+ const tips=+$('sTips').value||0,service=+$('sService').value||0,pool=tips+service,points=draftRows.reduce((a,r)=>a+r.point,0);
+ if(!pool)return alert('Enter tips and/or service charge first.');
+ if(!draftRows.length)return alert('No active staff.');
+ const per=pool/points;
+ const rec={id:'SET-'+Date.now(),date:$('sDate').value,shift:$('sShift').value,tips,service,pool,points,valuePerPoint:per,preparedBy:$('sPrepared').value||'Manager',reference:$('sRef').value||'',notes:$('sNotes').value||'',locked:true,createdAt:new Date().toISOString(),rows:draftRows.map(r=>({personId:r.personId,name:r.name,role:r.role,type:r.type,attendance:r.attendance,point:r.point,amount:+(per*r.point).toFixed(2)}))};
+ rec.distributed=rec.rows.reduce((a,r)=>a+r.amount,0);rec.rounding=+(pool-rec.distributed).toFixed(2);
+ db.settlements.unshift(rec);
+ rec.rows.forEach(r=>db.payments.unshift({id:'PAY-'+Date.now()+'-'+r.personId,settlementId:rec.id,date:rec.date,shift:rec.shift,personId:r.personId,name:r.name,role:r.role,point:r.point,amount:r.amount,status:'Pending',paidAt:null,paidBy:null}));
+ audit('Settlement','Locked',rec.id,`${rec.date} ${rec.shift} • pool ${money(pool)} • ${points.toFixed(2)} points`,rec.preparedBy);
+ persist();toast('Settlement locked successfully');go('ledger');
+}
+function clearSettlement(){prepareSettlement();toast('Draft cleared')}
+function latestForDate(){return db.settlements.find(x=>x.date===dateNow())||db.settlements[0]}
+function renderDashboard(){
+ const today=dateNow(), recs=db.settlements.filter(r=>r.date===today),pool=recs.reduce((a,r)=>a+r.pool,0),pts=recs.reduce((a,r)=>a+r.points,0);
+ const pays=db.payments.filter(p=>p.date===today),pending=pays.filter(p=>p.status==='Pending').reduce((a,p)=>a+p.amount,0),paid=pays.filter(p=>p.status==='Paid').reduce((a,p)=>a+p.amount,0);
+ $('dashPool').textContent=money(pool);$('dashPoolSub').textContent=`${recs.length} settlement${recs.length!==1?'s':''}`;
+ $('dashPoints').textContent=pts.toFixed(2);$('dashPending').textContent=money(pending);$('dashPendingSub').textContent=`${pays.filter(p=>p.status==='Pending').length} people`;$('dashPaid').textContent=money(paid);
+ const days=[];for(let i=6;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);let ds=d.toISOString().slice(0,10);days.push({d:ds,v:db.settlements.filter(r=>r.date===ds).reduce((a,r)=>a+r.pool,0)})}
+ const max=Math.max(1,...days.map(x=>x.v));$('weekChart').innerHTML=days.map(x=>`<div class="bar-col"><div class="bar-val">${x.v?money(x.v).replace(db.meta.currency+' ',''):''}</div><div class="bar" style="height:${Math.max(3,x.v/max*155)}px"></div><div class="bar-label">${x.d.slice(5)}</div></div>`).join('');
+ const r=latestForDate();$('latestBox').innerHTML=r?`<div class="summary-box"><div class="row"><span>Date / shift</span><b>${r.date} • ${r.shift}</b></div><div class="row"><span>Pool</span><b>${money(r.pool)}</b></div><div class="row"><span>Points</span><b>${r.points.toFixed(2)}</b></div><div class="row"><span>Value / point</span><b>${money(r.valuePerPoint)}</b></div><div class="row"><span>Reference</span><b>${esc(r.reference||r.id)}</b></div></div>`:`<div class="empty">No settlement yet.<br><button class="btn btn-primary" onclick="go('settlement')" style="margin-top:10px">Create first settlement</button></div>`;
+ const active=db.staff.filter(s=>s.active),full=active.filter(s=>s.type==='Full Time').length,part=active.filter(s=>s.type==='Part Time').length;
+ $('controlKpis').innerHTML=`<div class="mini"><b>${active.length}</b><span>Active staff (${full} full / ${part} part)</span></div><div class="mini"><b>${db.settlements.length}</b><span>Locked settlements</span></div><div class="mini"><b>${db.audit.length}</b><span>Audit events</span></div>`;
+}
+function renderLedger(){
+ const from=$('lFrom').value,to=$('lTo').value,role=$('lRole').value,status=$('lStatus').value,q=$('lSearch').value.toLowerCase();
+ let rows=db.payments.filter(p=>(!from||p.date>=from)&&(!to||p.date<=to)&&(!role||p.role===role)&&(!status||p.status===status)&&(!q||`${p.name} ${p.settlementId}`.toLowerCase().includes(q)));
+ $('ledgerBody').innerHTML=rows.map(p=>`<tr><td>${p.date}</td><td>${p.shift}</td><td><b>${esc(p.name)}</b></td><td>${p.role}</td><td>${p.point.toFixed(2)}</td><td class="num">${money(p.amount)}</td><td><span class="badge ${p.status==='Paid'?'paid':'pending'}">${p.status}</span></td><td>${p.paidAt?new Date(p.paidAt).toLocaleString('en-PK'):'—'}</td><td>${p.status==='Pending'?`<button class="btn btn-primary" onclick="pay('${p.id}')">Mark paid</button>`:`<button class="btn" onclick="undoPay('${p.id}')">Undo</button>`}</td></tr>`).join('')||`<tr><td colspan="9" class="empty">No payments found.</td></tr>`;
+}
+function pay(id){let p=db.payments.find(x=>x.id===id);if(!p)return;if(!confirm(`Confirm payout of ${money(p.amount)} to ${p.name}?`))return;p.status='Paid';p.paidAt=new Date().toISOString();p.paidBy='Manager';audit('Payment','Confirmed',p.id,`${p.name} • ${money(p.amount)} • ${p.settlementId}`);persist();renderLedger();renderDashboard();toast('Payment marked as paid')}
+function undoPay(id){let p=db.payments.find(x=>x.id===id);if(!p)return;if(!confirm('Undo this payment confirmation?'))return;p.status='Pending';p.paidAt=null;p.paidBy=null;audit('Payment','Reversed',p.id,`${p.name} • ${money(p.amount)}`);persist();renderLedger();renderDashboard();toast('Payment returned to pending')}
+function openQuickPay(){
+ const pending=db.payments.filter(p=>p.status==='Pending').slice(0,80);
+ $('modalBox').innerHTML=`<div class="modal-head"><h2>Record payout</h2><button class="close" onclick="closeModal()">×</button></div><p class="muted small">Choose a pending payout and confirm the cash/payment was actually given.</p><div class="table-wrap"><table><thead><tr><th>Staff</th><th>Date</th><th>Amount</th><th></th></tr></thead><tbody>${pending.map(p=>`<tr><td>${esc(p.name)}</td><td>${p.date}</td><td>${money(p.amount)}</td><td><button class="btn btn-primary" onclick="payFromModal('${p.id}')">Confirm</button></td></tr>`).join('')||'<tr><td colspan="4" class="empty">No pending payouts.</td></tr>'}</tbody></table></div>`;
+ $('modal').classList.add('open');
+}
+function payFromModal(id){closeModal();pay(id)}
+function closeModal(){$('modal').classList.remove('open')}
+$('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+
+function openStaffModal(editId){
+ const p=editId?db.staff.find(x=>x.id===editId):{id:'ST'+String(db.staff.length+1).padStart(3,'0'),name:'',role:'Waiter',type:'Full Time',active:true};
+ $('modalBox').innerHTML=`<div class="modal-head"><h2>${editId?'Edit staff':'Add staff'}</h2><button class="close" onclick="closeModal()">×</button></div>
+ <div class="filters" style="grid-template-columns:1fr 1fr;margin-top:15px"><div class="field"><label>Staff code</label><input id="mCode" value="${esc(p.id)}" ${editId?'readonly':''}></div><div class="field"><label>Name</label><input id="mName" value="${esc(p.name)}"></div><div class="field"><label>Role</label><select id="mRole"><option ${p.role==='Waiter'?'selected':''}>Waiter</option><option ${p.role==='Order Taker'?'selected':''}>Order Taker</option><option ${p.role==='Food Packer'?'selected':''}>Food Packer</option></select></div><div class="field"><label>Employment type</label><select id="mType"><option ${p.type==='Full Time'?'selected':''}>Full Time</option><option ${p.type==='Part Time'?'selected':''}>Part Time</option></select></div></div>
+ <div class="actions" style="margin-top:15px"><button class="btn btn-primary" onclick="saveStaff('${editId||''}')">Save staff</button><button class="btn" onclick="closeModal()">Cancel</button></div>`;
+ $('modal').classList.add('open');
+}
+function saveStaff(editId){
+ const id=$('mCode').value.trim(),name=$('mName').value.trim();if(!id||!name)return alert('Code and name are required.');
+ if(editId){let p=db.staff.find(x=>x.id===editId);Object.assign(p,{name,role:$('mRole').value,type:$('mType').value});audit('Staff','Updated',id,`${name} • ${p.role} • ${p.type}`)}
+ else {if(db.staff.some(x=>x.id===id))return alert('Staff code already exists.');db.staff.push({id,name,role:$('mRole').value,type:$('mType').value,active:true,createdAt:new Date().toISOString()});audit('Staff','Created',id,`${name} • ${$('mRole').value} • ${$('mType').value}`)}
+ persist();closeModal();renderStaff();renderDashboard();toast('Staff saved');
+}
+function toggleStaff(id){let p=db.staff.find(x=>x.id===id);if(!p)return;p.active=!p.active;audit('Staff',p.active?'Activated':'Deactivated',id,p.name);persist();renderStaff();renderDashboard()}
+function renderStaff(){
+ const role=$('stRole').value,status=$('stStatus').value;
+ const rows=db.staff.filter(p=>(!role||p.role===role)&&(!status||(status==='Active'?p.active:!p.active)));
+ $('staffBody').innerHTML=rows.map(p=>`<tr><td><b>${p.id}</b></td><td>${esc(p.name)}</td><td>${p.role}</td><td><span class="badge ${p.type==='Part Time'?'part':'full'}">${p.type}</span></td><td>${(p.type==='Part Time'?db.meta.part:db.meta.full).toFixed(2)}</td><td>${p.active?'<span class="badge paid">Active</span>':'<span class="badge absent">Inactive</span>'}</td><td><button class="btn" onclick="openStaffModal('${p.id}')">Edit</button> <button class="btn ${p.active?'btn-danger':'btn-primary'}" onclick="toggleStaff('${p.id}')">${p.active?'Deactivate':'Activate'}</button></td></tr>`).join('')||`<tr><td colspan="7" class="empty">No staff found.</td></tr>`;
+ $('ruleFull').textContent=db.meta.full.toFixed(2);$('rulePart').textContent=db.meta.part.toFixed(2);$('ruleEarly').textContent=db.meta.early.toFixed(2);
+}
+function renderReports(){
+ const from=$('rFrom').value,to=$('rTo').value,role=$('rRole').value,pay=$('rPay').value,group=$('rGroup').value;
+ let rows=db.payments.filter(p=>(!from||p.date>=from)&&(!to||p.date<=to)&&(!role||p.role===role)&&(!pay||p.status===pay));
+ const total=rows.reduce((a,p)=>a+p.amount,0),paid=rows.filter(p=>p.status==='Paid').reduce((a,p)=>a+p.amount,0),pending=total-paid,points=rows.reduce((a,p)=>a+p.point,0);
+ $('reportStats').innerHTML=`<div class="card stat"><div class="stat-label">Selected pool</div><div class="stat-value">${money(total)}</div><div class="stat-sub">${rows.length} payout lines</div></div><div class="card stat"><div class="stat-label">Paid</div><div class="stat-value">${money(paid)}</div><div class="stat-sub">${total?((paid/total)*100).toFixed(1):0}% settled</div></div><div class="card stat"><div class="stat-label">Points</div><div class="stat-value">${points.toFixed(2)}</div><div class="stat-sub">Weighted points</div></div><div class="card stat"><div class="stat-label">Pending</div><div class="stat-value">${money(pending)}</div><div class="stat-sub">${rows.filter(p=>p.status==='Pending').length} lines</div></div>`;
+ let map={};
+ rows.forEach(p=>{let k=group==='person'?p.personId:group==='role'?p.role:p.date;if(!map[k])map[k]={key:k,name:group==='person'?p.name:k,role:group==='person'?p.role:'—',points:0,total:0,paid:0,pending:0};map[k].points+=p.point;map[k].total+=p.amount;p.status==='Paid'?map[k].paid+=p.amount:map[k].pending+=p.amount});
+ const data=Object.values(map).sort((a,b)=>b.total-a.total);
+ $('reportTable').innerHTML=`<thead><tr><th>${group==='person'?'Staff':group==='role'?'Role':'Date'}</th><th>${group==='person'?'Role':'Lines'}</th><th>Points</th><th>Total</th><th>Paid</th><th>Pending</th></tr></thead><tbody>${data.map(x=>`<tr><td><b>${esc(x.name)}</b></td><td>${group==='person'?x.role:'—'}</td><td>${x.points.toFixed(2)}</td><td class="num">${money(x.total)}</td><td class="num">${money(x.paid)}</td><td class="num">${money(x.pending)}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">No data for selected filters.</td></tr>'}</tbody>`;
+}
+function renderAudit(){
+ const q=$('aSearch').value.toLowerCase(),type=$('aType').value;
+ const rows=db.audit.filter(a=>(!type||a.type===type)&&(!q||`${a.action} ${a.ref} ${a.user} ${a.details}`.toLowerCase().includes(q)));
+ $('auditBody').innerHTML=rows.map(a=>`<tr><td>${new Date(a.time).toLocaleString('en-PK')}</td><td>${a.type}</td><td><b>${a.action}</b></td><td>${esc(a.ref)}</td><td>${esc(a.user)}</td><td>${esc(a.details)}</td></tr>`).join('')||`<tr><td colspan="6" class="empty">No audit events.</td></tr>`;
+}
+function loadSettings(){$('setName').value=db.meta.name;$('setCurrency').value=db.meta.currency;$('setFull').value=db.meta.full;$('setPart').value=db.meta.part;$('setEarly').value=db.meta.early}
+function saveSettings(){
+ db.meta.name=$('setName').value.trim()||'Khyber Darbar';db.meta.currency=$('setCurrency').value.trim()||'PKR';db.meta.full=+$('setFull').value||1;db.meta.part=+$('setPart').value||.5;db.meta.early=+$('setEarly').value||1;
+ audit('System','Rules updated','SETTINGS',`Full ${db.meta.full}, Part ${db.meta.part}, Early ${db.meta.early}`);persist();renderStaff();renderDashboard();toast('Rules saved');
+}
+function backupJSON(){
+ const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`khyber-darbar-backup-${dateNow()}.json`;a.click();audit('System','Backup exported','BACKUP','Full database backup downloaded');persist();toast('Backup downloaded');
+}
+function restoreJSON(e){
+ const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.meta||!x.staff||!x.settlements||!x.payments)throw Error();if(!confirm('Replace current local data with this backup?'))return;db=x;audit('System','Backup restored','BACKUP',`Restored ${file.name}`);persist();location.reload()}catch{alert('Invalid backup file.')}};r.readAsText(file);
+}
+function exportCSV(rows,filename,headers){
+ const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(',')).join('\\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();
+}
+function exportPaymentsCSV(){exportCSV(db.payments.map(p=>[p.date,p.shift,p.name,p.role,p.point,p.amount,p.status,p.paidAt||'',p.settlementId]),`khyber-darbar-payments-${dateNow()}.csv`,['Date','Shift','Staff','Role','Points','Amount','Status','Paid At','Settlement'])}
+function exportReportCSV(){exportCSV(db.payments.map(p=>[p.date,p.name,p.role,p.point,p.amount,p.status,p.settlementId]),`khyber-darbar-report-${dateNow()}.csv`,['Date','Staff','Role','Points','Amount','Status','Settlement'])}
+function exportAuditCSV(){exportCSV(db.audit.map(a=>[a.time,a.type,a.action,a.ref,a.user,a.details]),`khyber-darbar-audit-${dateNow()}.csv`,['Time','Type','Action','Reference','User','Details'])}
+function previewSettlement(){window.print()}
+
+['lFrom','lTo','rFrom','rTo'].forEach(id=>$(id).value=dateNow());
+renderDashboard();renderStaff();renderReports();renderLedger();renderAudit();loadSettings();
+</script>
+</body>
+</html>
